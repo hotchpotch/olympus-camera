@@ -1,5 +1,5 @@
 
-require "olympus/camera/version"
+require "olympus-camera/version"
 
 class OlympusCamera
 end

@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "olympus/camera"
+require "olympus-camera"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
