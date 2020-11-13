@@ -3,7 +3,11 @@ RSpec.describe OlympusCamera do
     expect(OlympusCamera::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(false)
+  describe "generate_apis!" do
+    it "pen_f.xml" do
+      xml = load_data("pen_f.xml")
+      camera = OlympusCamera.new(commandlist_xml: xml)
+      expect(false).to eq(false)
+    end
   end
 end
