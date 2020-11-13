@@ -9,7 +9,11 @@ RSpec.describe OlympusCamera do
       camera = OlympusCamera.new(commandlist_xml: xml)
       expect(camera.api_version).to eq("2.60")
       expect(camera.support_funcs).to eq(["web", "remote", "gps", "release"])
-      expect(false).to eq(false)
+
+      expect(camera.commands[:exec_pwoff]).to eq({
+        method: :get,
+        query_type: {},
+      })
     end
   end
 end

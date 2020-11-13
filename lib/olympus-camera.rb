@@ -21,10 +21,26 @@ class OlympusCamera
     raw_commands = XmlSimple.xml_in xml
     @api_version = raw_commands["version"][0]
     @support_funcs = raw_commands["support"].map {|v| v["func"] }
-    @commands = normalize_commands raw_commands
+    @commands = normalize_commands raw_commands["cgi"]
   end
 
-  def normalize_commands(raw_commands)
+  def normalize_commands(cgi_commands)
+    commands = {}
+    cgi_commands.each do |data|
+      name = data["name"]
+      http_method = data["http_method"][0]
+
+      method = http_method["type"].to_sym
+      query_type = {}
+
+      commands[name.to_sym] = {
+        method: method,
+        query_type: query_type,
+      }
+    end
+    #require 'pry'
+    #binding.pry
+    commands
   end
 
   def get_commandlist
