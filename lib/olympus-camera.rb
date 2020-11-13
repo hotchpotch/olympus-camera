@@ -24,6 +24,7 @@ class OlympusCamera
     @commands = normalize_commands raw_commands["cgi"]
   end
 
+
   def normalize_commands(cgi_commands)
     commands = {}
     cgi_commands.each do |data|
@@ -31,7 +32,7 @@ class OlympusCamera
       http_method = data["http_method"][0]
 
       method = http_method["type"].to_sym
-      query_type = {}
+      query_type = get_recursive_query_type([], [http_method])
 
       commands[name.to_sym] = {
         method: method,
@@ -41,6 +42,15 @@ class OlympusCamera
     #require 'pry'
     #binding.pry
     commands
+  end
+
+  def get_recursive_query_type(parent_query, nodes, n = 1)
+    if (params = node["param#{n}"])
+      params = params.map {|d| d["name"]}
+    if (target = node["cmd#{n}"])
+      key = target["name"]
+    elsif (node["param#{n}"])
+    node[""]
   end
 
   def get_commandlist
