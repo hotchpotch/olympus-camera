@@ -28,7 +28,7 @@ RSpec.describe OlympusCamera::CommandsParser do
     })
     expect(commands[:get_imglist]).to eq({
       method: :get,
-      queries: [[[DIR: :any]]],
+      queries: [[["DIR", :any]]],
     })
   end
 end
