@@ -1,6 +1,7 @@
 
 require 'uri'
 require "olympus-camera/version"
+require "olympus-camera/any"
 require "olympus-camera/commands_parser"
 
 # for debug

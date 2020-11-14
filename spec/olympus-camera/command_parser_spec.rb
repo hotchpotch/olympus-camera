@@ -1,6 +1,7 @@
 
 RSpec.describe OlympusCamera::CommandsParser do
   CommandsParser = OlympusCamera::CommandsParser
+  ANY = OlympusCamera::ANY
 
   it "pen_f.xml" do
     xml = load_data("pen_f.xml")
@@ -17,18 +18,18 @@ RSpec.describe OlympusCamera::CommandsParser do
     expect(commands[:exec_takemotion]).to eq({
       method: :get,
       queries: [
-        [["com", "assignafframe"], ["point", :any]],
+        [["com", "assignafframe"], ["point", ANY]],
         [["com", "releaseafframe"]],
-        [["com", "takeready"], ["point", :any]],
-        [["com", "starttake"], ["point", :any], ["exposuremin", :any], ["upperlimit", :any]],
+        [["com", "takeready"], ["point", ANY]],
+        [["com", "starttake"], ["point", ANY], ["exposuremin", ANY], ["upperlimit", ANY]],
         [["com", "stoptake"]],
-        [["com", "startmovietake"], ["limitter", :any], ["liveview", "on"]],
+        [["com", "startmovietake"], ["limitter", ANY], ["liveview", "on"]],
         [["com", "stopmovietake"]],
       ],
     })
     expect(commands[:get_imglist]).to eq({
       method: :get,
-      queries: [[["DIR", :any]]],
+      queries: [[["DIR", ANY]]],
     })
   end
 end

@@ -1,5 +1,6 @@
 
 require 'xmlsimple'
+require "olympus-camera/any"
 
 class OlympusCamera
   module CommandsParser
@@ -75,7 +76,7 @@ class OlympusCamera
           appended
         elsif commands_1
           appended = append_queries_walk_node([], commands_1, n)
-          queries + [name, :any] + appended.flatten
+          queries + [name, ANY] + appended.flatten
         else
           params = node["param#{n}"]
           if params && name
@@ -84,7 +85,7 @@ class OlympusCamera
             if queries.length == 1
               queries + [name]
             else
-              queries + [name, :any]
+              queries + [name, ANY]
             end
           else
             nil
