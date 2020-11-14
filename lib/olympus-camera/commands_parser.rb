@@ -90,7 +90,7 @@ class OlympusCamera
             nil
           end
         end
-      end
+      end.select {|a| a }
       tail_array(q)
     end
 
