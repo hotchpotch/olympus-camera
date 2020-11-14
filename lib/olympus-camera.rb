@@ -41,11 +41,9 @@ class OlympusCamera
 
       commands[name.to_sym] = {
         method: method,
-        queryies: queries,
+        queries: queries,
       }
     end
-    #require 'pry'
-    #binding.pry
     commands
   end
 
@@ -60,13 +58,13 @@ class OlympusCamera
     r
   end
 
-  def in_groups_of(array, n)
-    array.each_slice(n).map {|a| a.fill nil, a.size, n - a.size }.transpose.map(&:compact)
-  end
-
   def get_pair_queries(root)
     qs = append_queries_walk_node([], [root])
-    qs.map {|q| in_groups_of(q, 2) }
+    pp qs
+    puts '----'
+    qs.map {|q| 
+      Array.new((q.length / 2).floor).map { [q.shift, q.shift] }
+    }
   end
 
   def append_queries_walk_node(queries, nodes, n = 1)
@@ -75,10 +73,24 @@ class OlympusCamera
       commands_1 = node["cmd#{n + 1}"]
       name = node["name"]
       if commands
-        append_queries_walk_node(name ? queries + [name] : queries, commands, n)
+        appended = append_queries_walk_node(name ? queries + [name] : queries, commands, n)
+        if commands_1
+          # for
+          # <param1 name="startmovietake">
+          #  <cmd2 name="limitter"/>
+          #  <cmd3 name="liveview">
+          #   <param3 name="on"/>
+          #  </cmd3>
+          # </param1
+          target = node.clone
+          target.delete("cmd#{n}")
+          target.delete("name")
+          appended = (appended + append_queries_walk_node([], [target], n + 1)).flatten
+        end
+        appended
       elsif commands_1
-        r = append_queries_walk_node([], commands_1, n)
-        queries + [name] + r.flatten
+        appended = append_queries_walk_node([], commands_1, n)
+        queries + [name, :any] + appended.flatten
       else
         params = node["param#{n}"]
         if params && name

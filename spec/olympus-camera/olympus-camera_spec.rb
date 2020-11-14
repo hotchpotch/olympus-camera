@@ -23,7 +23,7 @@ RSpec.describe OlympusCamera do
           [["com", "takeready"], ["point", :any]],
           [["com", "starttake"], ["point", :any], ["exposuremin", :any], ["upperlimit", :any]],
           [["com", "stoptake"]],
-          [["com", "startmovietake"], ["limitter", :any], ["liveview", ["on"]]],
+          [["com", "startmovietake"], ["limitter", :any], ["liveview", "on"]],
           [["com", "stopmovietake"]],
         ],
       })
