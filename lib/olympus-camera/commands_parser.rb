@@ -21,16 +21,23 @@ class OlympusCamera
     def normalize_cgi_commands(cgi_commands)
       commands = {}
       cgi_commands.each do |data|
-        name = data["name"]
-        http_method = data["http_method"][0]
+        name = data["name"].to_sym
+        http_method = data['http_method'] && data["http_method"][0]
+        if http_method
+          method = http_method["type"].to_sym
+          queries = get_pair_queries(http_method)
 
-        method = http_method["type"].to_sym
-        queries = get_pair_queries(http_method)
-
-        commands[name.to_sym] = {
-          method: method,
-          queries: queries,
-        }
+          commands[name] = {
+            method: method,
+            queries: queries,
+          }
+        else
+          # e-m1-mark2.xml: cancel_trimresize
+          commands[name] = {
+            method: :get,
+            queries: [],
+          }
+        end
       end
       commands
     end
