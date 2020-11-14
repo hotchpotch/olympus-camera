@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="Shift-JIS"?>
+<oishare>
+ <version>2.60</version>
+ <support func="web"/>
+ <support func="remote"/>
+ <support func="gps"/>
+ <support func="release"/>
+ <cgi name="exec_takemotion">
+  <http_method type="get">
+   <cmd1 name="com">
+    <param1 name="assignafframe">
+     <cmd2 name="point"/>
+    </param1>
+    <param1 name="releaseafframe"/>
+    <param1 name="takeready">
+     <cmd2 name="point"/>
+    </param1>
+    <param1 name="starttake">
+     <cmd2 name="point">
+      <cmd3 name="exposuremin"/>
+      <cmd3 name="upperlimit"/>
+     </cmd2>
+    </param1>
+    <param1 name="stoptake"/>
+    <param1 name="startmovietake">
+     <cmd2 name="limitter"/>
+     <cmd3 name="liveview">
+      <param3 name="on"/>
+     </cmd3>
+    </param1>
+    <param1 name="stopmovietake"/>
+   </cmd1>
+  </http_method>
+ </cgi>
+</oishare>

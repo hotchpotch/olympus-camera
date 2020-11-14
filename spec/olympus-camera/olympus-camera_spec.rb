@@ -5,15 +5,15 @@ RSpec.describe OlympusCamera do
 
   describe "generate_apis!" do
     it "pen_f.xml" do
-      xml = load_data("pen_f.xml")
+      xml = load_data("pen_f_testing.xml")
       camera = OlympusCamera.new(commandlist_xml: xml)
       expect(camera.api_version).to eq("2.60")
       expect(camera.support_funcs).to eq(["web", "remote", "gps", "release"])
 
-      expect(camera.commands[:exec_pwoff]).to eq({
-        method: :get,
-        query_type: [],
-      })
+      # expect(camera.commands[:exec_pwoff]).to eq({
+      #   method: :get,
+      #   queryies: [],
+      # })
 
       expect(camera.commands[:exec_takemotion]).to eq({
         method: :get,
@@ -23,7 +23,7 @@ RSpec.describe OlympusCamera do
           [["com", "takeready"], ["point", :any]],
           [["com", "starttake"], ["point", :any], ["exposuremin", :any], ["upperlimit", :any]],
           [["com", "stoptake"]],
-          [["com", "startmovietake"], ["limitter", :any], ["liveview", "on"]],
+          [["com", "startmovietake"], ["limitter", :any], ["liveview", ["on"]]],
           [["com", "stopmovietake"]],
         ],
       })

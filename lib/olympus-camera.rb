@@ -3,6 +3,10 @@ require 'uri'
 require 'xmlsimple'
 require "olympus-camera/version"
 
+# for debug
+require 'pp'
+require 'pry'
+
 class OlympusCamera
   DEFAULT_HEADERS = {
       "Connection" => 'close',
@@ -32,11 +36,12 @@ class OlympusCamera
       http_method = data["http_method"][0]
 
       method = http_method["type"].to_sym
-      query_type = get_recursive_query_type([], [http_method])
+      queries = get_pair_queries(http_method)
+      pp queries
 
       commands[name.to_sym] = {
         method: method,
-        query_type: query_type,
+        queryies: queries,
       }
     end
     #require 'pry'
@@ -44,13 +49,52 @@ class OlympusCamera
     commands
   end
 
-  def get_recursive_query_type(parent_query, nodes, n = 1)
-    if (params = node["param#{n}"])
-      params = params.map {|d| d["name"]}
-    if (target = node["cmd#{n}"])
-      key = target["name"]
-    elsif (node["param#{n}"])
-    node[""]
+  def tail_array(array, r = [])
+    array.each {|a| 
+      if a[0] && a[0].kind_of?(Array)
+        tail_array a, r
+      else
+        r << a
+      end
+    }
+    r
+  end
+
+  def in_groups_of(array, n)
+    array.each_slice(n).map {|a| a.fill nil, a.size, n - a.size }.transpose.map(&:compact)
+  end
+
+  def get_pair_queries(root)
+    qs = append_queries_walk_node([], [root])
+    qs.map {|q| in_groups_of(q, 2) }
+  end
+
+  def append_queries_walk_node(queries, nodes, n = 1)
+    q = nodes.map do |node|
+      commands = node["cmd#{n}"]
+      commands_1 = node["cmd#{n + 1}"]
+      name = node["name"]
+      if commands
+        append_queries_walk_node(name ? queries + [name] : queries, commands, n)
+      elsif commands_1
+        r = append_queries_walk_node([], commands_1, n)
+        queries + [name] + r.flatten
+      else
+        params = node["param#{n}"]
+        if params && name
+          append_queries_walk_node(queries + [name], params, n + 1)
+        elsif name
+          if queries.length == 1
+            queries + [name]
+          else
+            queries + [name, :any]
+          end
+        else
+          nil
+        end
+      end
+    end
+    tail_array(q)
   end
 
   def get_commandlist
