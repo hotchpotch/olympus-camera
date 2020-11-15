@@ -1,5 +1,6 @@
 
 require 'uri'
+require 'net/http'
 require "olympus-camera/version"
 require "olympus-camera/any"
 require "olympus-camera/commands_parser"
@@ -21,13 +22,20 @@ class OlympusCamera
   def initialize(commandlist_xml: nil, api_host: "http://192.168.0.10")
     self.api_host = api_host
     parsed_commands = CommandsParser.parse(commandlist_xml || self.get_commandlist)
-    self.generate_apis! parsed_commands
+    self.generate_api! parsed_commands
   end
 
-  def generate_apis!(parsed_commands)
+  def generate_api!(parsed_commands)
     @api_version = parsed_commands[:api_version]
     @support_funcs = parsed_commands[:support_funcs]
     @commands = parsed_commands[:commands]
+
+    @commands.each do |name, command_args|
+      define_singleton_method(name) do |query: {}, headers: {}, skip_validation: false|
+        # validation
+        cgi_request(command: name, method: command_args[:method], query: query, headers: headers)
+      end
+    end
   end
 
 
