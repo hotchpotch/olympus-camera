@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'olympus-camera'
-require 'optparse'
-require 'pathname'
+require "olympus-camera"
+require "optparse"
+require "pathname"
 
 Signal.trap(:INT) { exit 1 }
 
@@ -10,23 +10,23 @@ options = {}
 
 opt = OptionParser.new
 
-opt.on('--delete', 'delete images on camera after download') {
+opt.on("--delete", "delete images on camera after download") {
   options[:delete] = true
 }
 
-opt.on('-c [NUM]', '--card-slot [NUM]', 'set SD card slot 1 or 2') {|n|
+opt.on("-c [NUM]", "--card-slot [NUM]", "set SD card slot 1 or 2") { |n|
   options[:slot] = n
 }
 
-opt.on('-e [EXTNAME]', '--ext [EXTNAME]', 'set download ext name, example: -e "jpg" or -e "oft"') {|n|
+opt.on("-e [EXTNAME]", "--ext [EXTNAME]", 'set download ext name, example: -e "jpg" or -e "oft"') { |n|
   options[:ext] = n.upcase
 }
 
-opt.on('-s', '--skip', 'skip download image when image exists') {
+opt.on("-s", "--skip", "skip download image when image exists") {
   options[:skip] = true
 }
 
-opt.on('-p', '--power-off', 'camera power off when finished') {
+opt.on("-p", "--power-off", "camera power off when finished") {
   options[:power_off] = true
 }
 
@@ -51,26 +51,24 @@ end
 model = camera.get_caminfo["model"]
 puts "Connected: #{model[0]}"
 
-
 if options[:slot]
   if camera.respond_to? :set_playtargetslot
-    camera.set_playtargetslot(options[:slot])
+    camera.set_playtargetslot({ "targetslot" => options[:slot] })
   else
     puts "Can't call camera.set_playtargetslot API, skip"
   end
 end
 
-
-images = camera.all_images.select {|image|
+images = camera.all_images.select { |image|
   if options[:ext]
-    File.extname(image).sub('.', '').upcase === options[:ext]
+    File.extname(image).sub(".", "").upcase === options[:ext]
   else
     true
   end
 }
 
 def num_format(n)
-  n.to_s.reverse.scan(/(..?.?)/).join(',').reverse
+  n.to_s.reverse.scan(/(..?.?)/).join(",").reverse
 end
 
 puts "Target camera #{images.length} images found"
@@ -83,8 +81,8 @@ if options[:delete]
 end
 
 images.each_with_index do |image, index|
-  counter = "[#{index+1}/#{images.length}]"
-  path = download_dir.join(image.split('/')[-1])
+  counter = "[#{index + 1}/#{images.length}]"
+  path = download_dir.join(image.split("/")[-1])
   if options[:skip] && path.exist?
     puts "#{counter} Found image #{path.realpath}, skip"
     next
@@ -92,9 +90,9 @@ images.each_with_index do |image, index|
   puts "#{counter} DOWNLOAD: #{image}"
   data = camera.get_image(image)
   puts "#{counter} WRITE: #{path} (#{num_format(data.size)} byte)"
-  path.open('w') {|f| f.puts data }
+  path.open("w") { |f| f.puts data }
   if options[:delete]
-    camera.exec_erase({"DIR" => image})
+    camera.exec_erase({ "DIR" => image })
     puts "#{counter} DELETED: #{image} on camera"
   end
 end
