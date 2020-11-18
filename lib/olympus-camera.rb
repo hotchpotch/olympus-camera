@@ -37,18 +37,15 @@ class OlympusCamera
   end
 
   def api_list
-    list = []
-    @commands.each do |name, command_args|
+    @commands.map do |name, command_args|
       queries = command_args[:queries]
       if (queries.length > 0)
-        queries.each do |query|
-          list << [name, query]
-        end
+        params = queries.map { |query| query.to_h }
+        [name.to_s, params]
       else
-        list << [name]
+        [name.to_s]
       end
     end
-    list
   end
 
   def get_commandlist
