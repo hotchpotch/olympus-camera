@@ -3,12 +3,15 @@ require "net/http"
 require "olympus-camera/version"
 require "olympus-camera/any"
 require "olympus-camera/commands_parser"
+require "xmlsimple"
 
 # for debug
 require "pp"
 require "pry"
 
 class OlympusCamera
+  class APIError < StandardError; end
+
   DEFAULT_HEADERS = {
     "Connection" => "close",
     "User-Agent" => "OlympusCameraKit",
@@ -29,9 +32,9 @@ class OlympusCamera
     @commands = parsed_commands[:commands]
 
     @commands.each do |name, command_args|
-      define_singleton_method(name) do |query: {}, headers: {}, skip_validation: false|
+      define_singleton_method(name) do |query = {}, headers: {}, skip_validation: false|
         # validation
-        cgi_request(command: name, method: command_args[:method], query: query, headers: headers)
+        cgi_request(command: name, method: command_args[:method], query: query, headers: headers, raw_result: false)
       end
     end
   end
@@ -49,10 +52,10 @@ class OlympusCamera
   end
 
   def get_commandlist
-    cgi_request(command: :get_commandlist, method: :get).body
+    cgi_request(command: :get_commandlist, method: :get, raw_result: true).body
   end
 
-  def cgi_request(command:, method:, query: nil, headers: {})
+  def cgi_request(command:, method:, query: nil, headers: {}, raw_result: false)
     uri = URI.parse(api_host).clone
     uri.path = "/#{command}.cgi"
     http = Net::HTTP.new(uri.host, uri.port)
@@ -69,5 +72,18 @@ class OlympusCamera
     req.initialize_http_header(headers)
 
     res = http.request(req)
+    if raw_result
+      return res
+    end
+
+    if res.code.to_i >= 400
+      raise APIError.new("API Error: " + res.inspect)
+    else
+      if res.content_type == "text/plain"
+        res.body
+      else
+        XmlSimple.xml_in res.body
+      end
+    end
   end
 end
