@@ -1,0 +1,154 @@
+# Olympus E-M1MarkIII API
+
+- `api_list()`
+- `all_images()`
+- `get_image(path)`
+
+## Auto generated API (instance methods)
+
+- `OLYClearConnectPCInfo()`
+- `OLYGetConnectPCInfo()`
+- `OLYSetConnectPCInfo()`
+- `cancel_trimresize()`
+- `clear_cameralogdata()`
+- `clear_resvflg({"DIR"=>:__any__})`
+- `exec_erase({"DIR"=>:__any__})`
+- `exec_movietrimresize({"DIR"=>:__any__})`
+- `exec_pwoff({"mode"=>"withble"})`
+- `exec_reboot()`
+- `exec_shutter({"com"=>"1stpush"})`
+- `exec_shutter({"com"=>"2ndpush"})`
+- `exec_shutter({"com"=>"1st2ndpush"})`
+- `exec_shutter({"com"=>"2nd1strelease"})`
+- `exec_shutter({"com"=>"2ndrelease"})`
+- `exec_shutter({"com"=>"1strelease"})`
+- `exec_takemisc({"com"=>"startliveview", "port"=>:__any__})`
+- `exec_takemisc({"com"=>"stopliveview"})`
+- `exec_takemisc({"com"=>"getrecview"})`
+- `exec_takemisc({"com"=>"getlastjpg"})`
+- `exec_takemisc({"com"=>"ctrlzoom", "move"=>"widemove"})`
+- `exec_takemisc({"com"=>"ctrlzoom", "move"=>"telemove"})`
+- `exec_takemisc({"com"=>"ctrlzoom", "move"=>"off"})`
+- `exec_takemisc({"com"=>"ctrlzoom", "move"=>"wideterm"})`
+- `exec_takemisc({"com"=>"ctrlzoom", "move"=>"teleterm"})`
+- `exec_takemisc({"com"=>"supermacromfinaflock", "move"=>"stop", "movement"=>:__any__})`
+- `exec_takemisc({"com"=>"MovieThroughStart"})`
+- `exec_takemisc({"com"=>"MovieThroughStop"})`
+- `exec_takemisc({"com"=>"GetShortMoviesAlbumInfo"})`
+- `exec_takemisc({"com"=>"GetMovieSetting"})`
+- `exec_takemotion({"com"=>"assignafframe", "point"=>:__any__})`
+- `exec_takemotion({"com"=>"releaseafframe"})`
+- `exec_takemotion({"com"=>"takeready", "point"=>:__any__})`
+- `exec_takemotion({"com"=>"starttake", "point"=>:__any__, "exposuremin"=>:__any__, "upperlimit"=>:__any__})`
+- `exec_takemotion({"com"=>"stoptake"})`
+- `exec_takemotion({"com"=>"startmovietake", "limitter"=>:__any__, "liveview"=>"on"})`
+- `exec_takemotion({"com"=>"stopmovietake"})`
+- `exit_moviestream()`
+- `fwup_check()`
+- `fwup_getfirmstatus()`
+- `fwup_getversions()`
+- `fwup_sendinfo()`
+- `fwup_sendsplit()`
+- `fwup_update()`
+- `fwup_updatemode()`
+- `get_activate()`
+- `get_cameraloginfo()`
+- `get_caminfo()`
+- `get_camprop({"com"=>"desc", "propname"=>"touchactiveframe"})`
+- `get_camprop({"com"=>"desc", "propname"=>"takemode"})`
+- `get_camprop({"com"=>"desc", "propname"=>"drivemode"})`
+- `get_camprop({"com"=>"desc", "propname"=>"focalvalue"})`
+- `get_camprop({"com"=>"desc", "propname"=>"expcomp"})`
+- `get_camprop({"com"=>"desc", "propname"=>"shutspeedvalue"})`
+- `get_camprop({"com"=>"desc", "propname"=>"isospeedvalue"})`
+- `get_camprop({"com"=>"desc", "propname"=>"wbvalue"})`
+- `get_camprop({"com"=>"desc", "propname"=>"noisereduction"})`
+- `get_camprop({"com"=>"desc", "propname"=>"lowvibtime"})`
+- `get_camprop({"com"=>"desc", "propname"=>"bulbtimelimit"})`
+- `get_camprop({"com"=>"desc", "propname"=>"digitaltelecon"})`
+- `get_camprop({"com"=>"desc", "propname"=>"exposemovie"})`
+- `get_camprop({"com"=>"desc", "propname"=>"cameradrivemode"})`
+- `get_camprop({"com"=>"desc", "propname"=>"colorphase"})`
+- `get_camprop({"com"=>"desc", "propname"=>"QualityMovie2"})`
+- `get_camprop({"com"=>"desc", "propname"=>"NoiseReductionExposureTime"})`
+- `get_camprop({"com"=>"desc", "propname"=>"SilentNoiseReduction"})`
+- `get_camprop({"com"=>"desc", "propname"=>"SilentTime"})`
+- `get_camprop({"com"=>"desc", "propname"=>"ValidMediaSlot"})`
+- `get_camprop({"com"=>"desc", "propname"=>"desclist"})`
+- `get_camprop({"com"=>"get", "propname"=>"touchactiveframe"})`
+- `get_camprop({"com"=>"get", "propname"=>"takemode"})`
+- `get_camprop({"com"=>"get", "propname"=>"drivemode"})`
+- `get_camprop({"com"=>"get", "propname"=>"focalvalue"})`
+- `get_camprop({"com"=>"get", "propname"=>"expcomp"})`
+- `get_camprop({"com"=>"get", "propname"=>"shutspeedvalue"})`
+- `get_camprop({"com"=>"get", "propname"=>"isospeedvalue"})`
+- `get_camprop({"com"=>"get", "propname"=>"wbvalue"})`
+- `get_camprop({"com"=>"get", "propname"=>"noisereduction"})`
+- `get_camprop({"com"=>"get", "propname"=>"lowvibtime"})`
+- `get_camprop({"com"=>"get", "propname"=>"bulbtimelimit"})`
+- `get_camprop({"com"=>"get", "propname"=>"digitaltelecon"})`
+- `get_camprop({"com"=>"get", "propname"=>"exposemovie"})`
+- `get_camprop({"com"=>"get", "propname"=>"cameradrivemode"})`
+- `get_camprop({"com"=>"get", "propname"=>"SilentNoiseReduction"})`
+- `get_camprop({"com"=>"get", "propname"=>"SilentTime"})`
+- `get_camprop({"com"=>"get", "propname"=>"ValidMediaSlot"})`
+- `get_camprop({"com"=>"check", "propname"=>"ValidMediaSlot"})`
+- `get_connectmode()`
+- `get_dcffilenum()`
+- `get_exif({"DIR"=>:__any__})`
+- `get_extmysetmode()`
+- `get_gpsdivunit()`
+- `get_imglist({"DIR"=>:__any__})`
+- `get_movfileinfo({"DIR"=>:__any__})`
+- `get_moviestream1frame({"DIR"=>:__any__})`
+- `get_moviestreaminfo()`
+- `get_movplaytime({"DIR"=>:__any__})`
+- `get_mysetbackupstate()`
+- `get_mysetdatamodekind()`
+- `get_mysetdatasize()`
+- `get_mysetrestorestate()`
+- `get_partialcameralogdata()`
+- `get_partialmysetdata()`
+- `get_playtargetslot()`
+- `get_resizeimg({"DIR"=>:__any__, "size"=>"1024"})`
+- `get_resizeimg({"DIR"=>:__any__, "size"=>"1600"})`
+- `get_resizeimg({"DIR"=>:__any__, "size"=>"1920"})`
+- `get_resizeimg({"DIR"=>:__any__, "size"=>"2048"})`
+- `get_rsvimglist()`
+- `get_screennail({"DIR"=>:__any__})`
+- `get_thumbnail({"DIR"=>:__any__})`
+- `get_trimresizeprocstatus()`
+- `get_unusedcapacity()`
+- `ready_moviestream()`
+- `req_attachexifgps()`
+- `req_storegpsinfo({"mode"=>:__any__, "date"=>:__any__})`
+- `request_getmysetdata()`
+- `request_restoremysetdata()`
+- `send_partialmysetdata()`
+- `set_camprop({"com"=>"set", "propname"=>"takemode"})`
+- `set_camprop({"com"=>"set", "propname"=>"drivemode"})`
+- `set_camprop({"com"=>"set", "propname"=>"focalvalue"})`
+- `set_camprop({"com"=>"set", "propname"=>"expcomp"})`
+- `set_camprop({"com"=>"set", "propname"=>"shutspeedvalue"})`
+- `set_camprop({"com"=>"set", "propname"=>"isospeedvalue"})`
+- `set_camprop({"com"=>"set", "propname"=>"wbvalue"})`
+- `set_camprop({"com"=>"set", "propname"=>"exposemovie"})`
+- `set_camprop({"com"=>"set", "propname"=>"colorphase"})`
+- `set_camprop({"com"=>"set", "propname"=>"SceneSub"})`
+- `set_mysetdatasize()`
+- `set_playtargetslot({"targetslot"=>"1"})`
+- `set_playtargetslot({"targetslot"=>"2"})`
+- `set_timeout({"timeoutsec"=>:__any__})`
+- `set_utctimediff({"utctime"=>:__any__, "diff"=>:__any__})`
+- `start_moviestream()`
+- `start_moviestreamts()`
+- `stop_moviestream()`
+- `switch_cammode({"mode"=>"rec", "lvqty"=>"0320x0240"})`
+- `switch_cammode({"mode"=>"rec", "lvqty"=>"0640x0480"})`
+- `switch_cammode({"mode"=>"rec", "lvqty"=>"0800x0600"})`
+- `switch_cammode({"mode"=>"rec", "lvqty"=>"1024x0768"})`
+- `switch_cammode({"mode"=>"rec", "lvqty"=>"1280x0960"})`
+- `switch_cammode({"mode"=>"play"})`
+- `switch_cammode({"mode"=>"shutter"})`
+- `switch_cammode({"mode"=>"maintenance"})`
+- `switch_cammode({"mode"=>"cameralog"})`
