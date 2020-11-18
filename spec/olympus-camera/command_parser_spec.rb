@@ -9,6 +9,17 @@ RSpec.describe OlympusCamera::CommandsParser do
     expect(parsed[:support_funcs]).to eq(["web", "remote", "gps", "release"])
 
     commands = parsed[:commands]
+
+    expect(commands[:get_resizeimg]).to eq({
+      method: :get,
+      queries: [
+        [["DIR", ANY], ["size", "1024"]],
+        [["DIR", ANY], ["size", "1600"]],
+        [["DIR", ANY], ["size", "1920"]],
+        [["DIR", ANY], ["size", "2048"]],
+      ],
+    })
+
     expect(commands[:exec_pwoff]).to eq({
       method: :get,
       queries: [],
@@ -86,6 +97,7 @@ RSpec.describe OlympusCamera::CommandsParser do
         [["com", "stopmovietake"]],
       ],
     })
+
     expect(commands[:get_imglist]).to eq({
       method: :get,
       queries: [[["DIR", ANY]]],

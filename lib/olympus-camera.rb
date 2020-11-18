@@ -36,6 +36,21 @@ class OlympusCamera
     end
   end
 
+  def api_list
+    list = []
+    @commands.each do |name, command_args|
+      queries = command_args[:queries]
+      if (queries.length > 0)
+        queries.each do |query|
+          list << [name, query]
+        end
+      else
+        list << [name]
+      end
+    end
+    list
+  end
+
   def get_commandlist
     cgi_request(command: :get_commandlist, method: :get).body
   end
@@ -56,6 +71,6 @@ class OlympusCamera
     req = Net::HTTP::Get.new(path)
     req.initialize_http_header(headers)
 
-    http.request(req)
+    res = http.request(req)
   end
 end

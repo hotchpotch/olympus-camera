@@ -65,6 +65,9 @@ class OlympusCamera
         commands_1 = node["cmd#{n + 1}"]
         name = node["name"]
         if commands
+          if queries.length % 2 == 1 && !name
+            queries = queries + [ANY]
+          end
           appended = append_queries_walk_node(name ? queries + [name] : queries, commands, n)
           if commands_1
             # for
@@ -86,13 +89,16 @@ class OlympusCamera
         else
           params = node["param#{n}"]
           if params && name
-            append_queries_walk_node(queries + [name], params, n + 1)
+            append_queries_walk_node(
+              queries + [name], params, n + 1
+            )
           elsif name
-            if queries.length == 1
-              queries + [name]
-            else
+            if queries.length % 2 == 0
               queries + [name, ANY]
+            else
+              queries + [name]
             end
+          elsif params
           else
             nil
           end
