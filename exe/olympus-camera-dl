@@ -1,0 +1,97 @@
+#!/usr/bin/env ruby
+
+require 'olympus-camera'
+require 'optparse'
+require 'pathname'
+
+Signal.trap(:INT) { exit 1 }
+
+options = {}
+
+opt = OptionParser.new
+
+opt.on('--delete', 'delete images on camera after download') {
+  options[:delete] = true
+}
+
+opt.on('-c [NUM]', '--card-slot [NUM]', 'set SD card slot 1 or 2') {|n|
+  options[:slot] = n
+}
+
+opt.on('-e [EXTNAME]', '--ext [EXTNAME]', 'set download ext name, example: -e "jpg" or -e "oft"') {|n|
+  options[:ext] = n.upcase
+}
+
+opt.on('-o [dir]', '--download-dir', 'set download directory') {|n|
+  options[:download_dir] = n
+}
+
+opt.on('-s', '--skip', 'skip download image when image exists') {
+  options[:skip] = true
+}
+
+opt.parse!(ARGV)
+
+download_dir = Pathname.new(options[:download_dir] || Dir.pwd)
+
+if !download_dir.exist?
+  download_dir.mkpath
+end
+
+begin
+  camera = OlympusCamera.new
+rescue Net::OpenTimeout => e
+  warn "ERROR: Can't connect to camera"
+  exit 1
+end
+
+
+if options[:slot]
+  if camera.respond_to? :set_playtargetslot
+    camera.set_playtargetslot(options[:slot])
+  else
+    puts "Can't call camera.set_playtargetslot API, skip"
+  end
+end
+
+
+images = camera.all_images.select {|image|
+  if options[:ext]
+    File.extname(image).sub('.', '').upcase === options[:ext]
+  else
+    true
+  end
+}
+
+def num_format(n)
+  n.to_s.reverse.scan(/(..?.?)/).join(',').reverse
+end
+
+if images.length == 0
+  puts "Target camera images not found: skip"
+else
+  puts "Target camera #{images.length} images found"
+
+  if options[:delete]
+    if !camera.respond_to? :exec_erase
+      puts "Can't call camera.exec_erase API, skip delete images"
+      options[:delete] = false
+    end
+  end
+
+  images.each do |image|
+    path = download_dir.join(image.split('/')[-1])
+    if options[:skip] && path.exist?
+      puts "Found image #{path.realpath}, skip"
+      next
+    end
+    puts "DOWNLOAD: #{image}"
+    data = camera.get_image(image)
+    puts "WRITE: #{path} (#{num_format(data.size)} byte)"
+    path.open('w') {|f| f.puts data }
+    if options[:delete]
+      camera.exec_erase({"DIR" => image})
+      puts "DELETED: #{image} on camera"
+    end
+  end
+end
