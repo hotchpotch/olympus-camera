@@ -22,15 +22,18 @@ opt.on('-e [EXTNAME]', '--ext [EXTNAME]', 'set download ext name, example: -e "j
   options[:ext] = n.upcase
 }
 
-opt.on('-o [dir]', '--download-dir', 'set download directory') {|n|
-  options[:download_dir] = n
-}
-
 opt.on('-s', '--skip', 'skip download image when image exists') {
   options[:skip] = true
 }
 
+opt.on('-p', '--power-off', 'camera power off when finished') {
+  options[:power_off] = true
+}
+
+opt.banner = "Usage: olympus-camela-dl [options] ./photo-download-dir/"
+
 opt.parse!(ARGV)
+options[:download_dir] = ARGV[0]
 
 download_dir = Pathname.new(options[:download_dir] || Dir.pwd)
 
@@ -44,6 +47,9 @@ rescue Net::OpenTimeout => e
   warn "ERROR: Can't connect to camera"
   exit 1
 end
+
+model = camera.get_caminfo["model"]
+puts "Connected: #{model[0]}"
 
 
 if options[:slot]
@@ -67,31 +73,37 @@ def num_format(n)
   n.to_s.reverse.scan(/(..?.?)/).join(',').reverse
 end
 
-if images.length == 0
-  puts "Target camera images not found: skip"
-else
-  puts "Target camera #{images.length} images found"
+puts "Target camera #{images.length} images found"
 
-  if options[:delete]
-    if !camera.respond_to? :exec_erase
-      puts "Can't call camera.exec_erase API, skip delete images"
-      options[:delete] = false
-    end
+if options[:delete]
+  if !camera.respond_to? :exec_erase
+    puts "Can't call camera.exec_erase API, skip delete images"
+    options[:delete] = false
   end
+end
 
-  images.each do |image|
-    path = download_dir.join(image.split('/')[-1])
-    if options[:skip] && path.exist?
-      puts "Found image #{path.realpath}, skip"
-      next
-    end
-    puts "DOWNLOAD: #{image}"
-    data = camera.get_image(image)
-    puts "WRITE: #{path} (#{num_format(data.size)} byte)"
-    path.open('w') {|f| f.puts data }
-    if options[:delete]
-      camera.exec_erase({"DIR" => image})
-      puts "DELETED: #{image} on camera"
-    end
+images.each_with_index do |image, index|
+  counter = "[#{index+1}/#{images.length}]"
+  path = download_dir.join(image.split('/')[-1])
+  if options[:skip] && path.exist?
+    puts "#{counter} Found image #{path.realpath}, skip"
+    next
+  end
+  puts "#{counter} DOWNLOAD: #{image}"
+  data = camera.get_image(image)
+  puts "#{counter} WRITE: #{path} (#{num_format(data.size)} byte)"
+  path.open('w') {|f| f.puts data }
+  if options[:delete]
+    camera.exec_erase({"DIR" => image})
+    puts "#{counter} DELETED: #{image} on camera"
+  end
+end
+
+if options[:power_off]
+  if !camera.respond_to? :exec_pwoff
+    puts "Can't call camera.exec_pwoff API, skip power off"
+  else
+    puts "Power off"
+    camera.exec_pwoff()
   end
 end
