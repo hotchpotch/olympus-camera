@@ -1,5 +1,4 @@
 RSpec.describe OlympusCamera do
-  ANY = OlympusCamera::ANY
   it "has a version number" do
     expect(OlympusCamera::VERSION).not_to be nil
   end
@@ -11,7 +10,7 @@ RSpec.describe OlympusCamera do
       expect(camera.api_version).to eq("2.60")
       expect(camera.support_funcs).to eq(["web", "remote", "gps", "release"])
 
-      expect(camera.api_list.detect { |(name, params)| name == "get_imglist" }).to eq(["get_imglist", [{ "DIR" => ANY }]])
+      expect(camera.api_list.detect { |(name, params)| name == "get_imglist" }).to eq(["get_imglist", [{ "DIR" => OlympusCamera::ANY }]])
     end
   end
 end

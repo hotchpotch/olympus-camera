@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = %q{Olympus Camera's API library}
   spec.homepage = "https://github.com/hotchpotch/olympus-camera/"
   spec.license = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
@@ -30,5 +30,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 12.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "solargraph"
 end

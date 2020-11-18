@@ -6,10 +6,6 @@ require "olympus-camera/commands_parser"
 require "xmlsimple"
 require "open-uri"
 
-# for debug
-require "pp"
-require "pry"
-
 class OlympusCamera
   class APIError < StandardError; end
 
