@@ -1,5 +1,4 @@
 require "olympus-camera"
-require "pp"
 
 camera = OlympusCamera.new
 model = camera.get_caminfo["model"]

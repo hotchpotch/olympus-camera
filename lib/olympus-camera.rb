@@ -120,7 +120,7 @@ class OlympusCamera
     if res.code.to_i >= 400
       raise APIError.new("API Error: " + res.inspect)
     else
-      if res.content_type&.include? "/xml"
+      if res.content_type&.include?("/xml") && res.body.length > 10
         XmlSimple.xml_in res.body
       else
         res.body
