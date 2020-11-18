@@ -1,19 +1,17 @@
-
-require 'uri'
-require 'net/http'
+require "uri"
+require "net/http"
 require "olympus-camera/version"
 require "olympus-camera/any"
 require "olympus-camera/commands_parser"
 
 # for debug
-require 'pp'
-require 'pry'
-
+require "pp"
+require "pry"
 
 class OlympusCamera
   DEFAULT_HEADERS = {
-      "Connection" => 'close',
-      "User-Agent" =>  'OlympusCameraKit',
+    "Connection" => "close",
+    "User-Agent" => "OlympusCameraKit",
   }
 
   attr_accessor :api_host
@@ -38,7 +36,6 @@ class OlympusCamera
     end
   end
 
-
   def get_commandlist
     cgi_request(command: :get_commandlist, method: :get).body
   end
@@ -53,7 +50,7 @@ class OlympusCamera
     path = uri.path
 
     if query
-      path = path + '?' + URI.encode_www_form(query)
+      path = path + "?" + URI.encode_www_form(query)
     end
 
     req = Net::HTTP::Get.new(path)

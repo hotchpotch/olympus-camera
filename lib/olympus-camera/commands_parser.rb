@@ -1,5 +1,4 @@
-
-require 'xmlsimple'
+require "xmlsimple"
 require "olympus-camera/any"
 
 class OlympusCamera
@@ -9,7 +8,7 @@ class OlympusCamera
     def parse(xml)
       raw_commands = XmlSimple.xml_in xml
       api_version = raw_commands["version"][0]
-      support_funcs = raw_commands["support"].map {|v| v["func"] }
+      support_funcs = raw_commands["support"].map { |v| v["func"] }
       commands = normalize_cgi_commands raw_commands["cgi"]
       {
         api_version: api_version,
@@ -22,7 +21,7 @@ class OlympusCamera
       commands = {}
       cgi_commands.each do |data|
         name = data["name"].to_sym
-        http_method = data['http_method'] && data["http_method"][0]
+        http_method = data["http_method"] && data["http_method"][0]
         if http_method
           method = http_method["type"].to_sym
           queries = get_pair_queries(http_method)
@@ -43,7 +42,7 @@ class OlympusCamera
     end
 
     def tail_array(array, r = [])
-      array.each {|a| 
+      array.each { |a|
         if a[0] && a[0].kind_of?(Array)
           tail_array a, r
         else
@@ -55,7 +54,7 @@ class OlympusCamera
 
     def get_pair_queries(root)
       qs = append_queries_walk_node([], [root])
-      qs.map {|q| 
+      qs.map { |q|
         Array.new((q.length / 2).floor).map { [q.shift, q.shift] }
       }
     end
@@ -98,9 +97,8 @@ class OlympusCamera
             nil
           end
         end
-      end.select {|a| a }
+      end.select { |a| a }
       tail_array(q)
     end
-
   end
 end

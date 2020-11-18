@@ -1,4 +1,3 @@
-
 RSpec.describe OlympusCamera::CommandsParser do
   CommandsParser = OlympusCamera::CommandsParser
   ANY = OlympusCamera::ANY
