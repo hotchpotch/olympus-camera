@@ -52,7 +52,7 @@ class OlympusCamera
       else
         [name.to_s]
       end
-    end
+    end.sort
   end
 
   def all_images
