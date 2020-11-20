@@ -29,20 +29,39 @@ Or install it yourself as:
 
     gem install olympus-camera
 
-## Usage
+### Tips: debugging
 
-TODO: Write usage instructions here
+with [http-dump](https://github.com/hotchpotch/http-dump) gem
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+[1] pry(main)> require 'http-dump'
+[2] pry(main)> require 'olympus-camera'
+[3] pry(main)> camera = OlympusCamera.new
+[4] pry(main)> HTTPDump.enable!
+[5] pry(main)> camera.get_[tab]
+camera.get_activate        camera.get_gpsdivunit      camera.get_rsvimglist
+camera.get_caminfo         camera.get_image           camera.get_screennail
+camera.get_camprop         camera.get_imglist         camera.get_thumbnail
+camera.get_connectmode     camera.get_movplaytime     camera.get_unusedcapacity
+camera.get_dcffilenum      camera.get_resizeimg
+[5] pry(main)> camera.get_caminfo()
+> GET http://192.168.0.10/get_caminfo.cgi with headers {'Connection'=>'close', 'User-Agent'=>'OlympusCameraKit'}
+< 200 OK
+< Content-Type: text/xml
+< Content-Length: 108
+< Connection: close
+<
+<?xml version="1.0"?>
+<caminfo>
+<model>PEN-F</model>
+<MISOAExpComp>available</MISOAExpComp>
+</caminfo>
+=> {"model"=>["PEN-F"], "MISOAExpComp"=>["available"]}
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/olympus-camera.
-
+Pull requests are welcome on GitHub at https://github.com/hotchpotch/olympus-camera.
 
 ## License
 
